@@ -289,6 +289,439 @@
 </code></pre>
 <h2 id="build-and-install-the-amf-command-line-tool">Build and install the AMF command-line tool</h2>
 <p>This tutorial assumes you have a working version of the AMF comand-line as described in the <a href="quickstart.html">quickstart</a> tutorial.</p>
+<h2 id="initial-stand-alone-aml-dialect">Initial stand-alone AML dialect</h2>
+<p>In this tutorial will break a stand-alone monolithic metadata document defined using AML into a set of modular documents that can be edited, published and linked independently.</p>
+<p>We will start with the initial version of the dialect, found in <code>aml/modular/dialect/database_configuration.yaml</code>, a very simple AML Dialect describing configuration metadata file with information to connect to different databases.</p>
+<p><em>database_configuration.yaml</em></p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Dialect 1.0</span>
+
+<span class="hljs-attr">dialect:</span> DB Config
+<span class="hljs-attr">version:</span> <span class="hljs-number">1.0</span>
+
+<span class="hljs-attr">uses:</span>
+<span class="hljs-attr">  infra:</span> ../vocabulary/infra.yaml
+<span class="hljs-attr">  cfg:</span> ../vocabulary/config.yaml
+
+<span class="hljs-attr">external:</span>
+<span class="hljs-attr">  schema-org:</span> http://schema.org/
+<span class="hljs-attr">  dbconfig:</span> http://mycompany.com/dialects/dbconfig<span class="hljs-comment">#</span>
+
+
+<span class="hljs-attr">nodeMappings:</span>
+
+<span class="hljs-attr">  DatabaseConfigNode:</span>
+<span class="hljs-attr">    classTerm:</span> cfg.ConfigurationItem
+<span class="hljs-attr">    mapping:</span>
+<span class="hljs-attr">      server:</span>
+<span class="hljs-attr">        propertyTerm:</span> cfg.configured
+<span class="hljs-attr">        range:</span> DatabaseServerNode
+<span class="hljs-attr">      dbs:</span>
+<span class="hljs-attr">        propertyTerm:</span> dbconfig.dbs
+<span class="hljs-attr">        mapKey:</span> cfg.environment
+<span class="hljs-attr">        range:</span> DatabaseNode
+
+<span class="hljs-attr">  DatabaseNode:</span>
+<span class="hljs-attr">    classTerm:</span> infra.Database
+<span class="hljs-attr">    mapping:</span>
+<span class="hljs-attr">      environment:</span>
+<span class="hljs-attr">        propertyTerm:</span> cfg.environment
+<span class="hljs-attr">        range:</span> string
+<span class="hljs-attr">        enum:</span>
+<span class="hljs-bullet">          -</span> development
+<span class="hljs-bullet">          -</span> production
+<span class="hljs-bullet">          -</span> testing
+<span class="hljs-bullet">          -</span> qa
+<span class="hljs-attr">      name:</span>
+<span class="hljs-attr">        propertyTerm:</span> schema-org.name
+<span class="hljs-attr">        range:</span> string
+<span class="hljs-attr">        mandatory:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">      username:</span>
+<span class="hljs-attr">        propertyTerm:</span> cfg.username
+<span class="hljs-attr">        range:</span> string
+
+<span class="hljs-attr">  DatabaseServerNode:</span>
+<span class="hljs-attr">    classTerm:</span> infra.DatabaseServer
+<span class="hljs-attr">    mapping:</span>
+<span class="hljs-attr">      host:</span>
+<span class="hljs-attr">        mandatory:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">        propertyTerm:</span> infra.endpoint
+<span class="hljs-attr">        range:</span> string
+<span class="hljs-attr">      port:</span>
+<span class="hljs-attr">        mandatory:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">        propertyTerm:</span> infra.port
+<span class="hljs-attr">        range:</span> integer
+<span class="hljs-attr">      driver:</span>
+<span class="hljs-attr">        mandatory:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">        propertyTerm:</span> infra.driver
+<span class="hljs-attr">        range:</span> string
+
+<span class="hljs-attr">documents:</span>
+<span class="hljs-attr">  root:</span>
+<span class="hljs-attr">    encodes:</span> DatabaseConfigNode
+</code></pre>
+<p>This AML dialect uses two vocabularies, one to describe infrastructure and another one to describe configurations, located in <code>aml/modular/vocabulary/config.yaml</code> and <code>aml/modular/vocabulary/infra.yaml</code>.</p>
+<p>Since this AML dialect defines a single monolithic type of document, the <code>documents</code> section of the dialect only includes a <code>root</code> entry encoding the root node of the document.</p>
+<p>Using this dialect definition, we can edit stand-alone configuration documents, like the configuration document located at <code>aml/modular/db1.yaml</code>:</p>
+<p><em>db1.yaml</em></p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%DBConfig 1.0</span>
+
+<span class="hljs-attr">server:</span>
+<span class="hljs-attr">  host:</span> localhost
+<span class="hljs-attr">  port:</span> <span class="hljs-number">5001</span>
+<span class="hljs-attr">  driver:</span> mysql
+
+<span class="hljs-attr">dbs:</span>
+<span class="hljs-attr">  dev:</span>
+<span class="hljs-attr">    name:</span> accounts_dev
+<span class="hljs-attr">    username:</span> jsmith
+<span class="hljs-attr">  test:</span>
+<span class="hljs-attr">    name:</span> accounts_test
+<span class="hljs-attr">    username:</span> jsmith
+</code></pre>
+<h2 id="defining-reusable-fragments">Defining reusable fragments</h2>
+<p>In many situations entities defined in a document can be reused in multiple documents. AML allows to define this reusable entities in their own independent metadata documents known as fragments that can be linked from all these documents. The graph of information parsed from all these documents will point to the same node URI in the generated metadata graph.</p>
+<p>To declare a fragment the <code>documents</code> section of the AML dialect must include a <code>fragments</code> entry with a mapping from name of fragments to the node encoded in the fragment.</p>
+<p>Version 1.1 of the DB Config dialect introduces a fragment to declare databases servers. It can be found in the <code>aml/modular/dialect/database_configuration_2.yaml</code>.</p>
+<p><em>database_configuration_2.yaml</em></p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Dialect 1.0</span>
+
+<span class="hljs-attr">dialect:</span> DB Config
+<span class="hljs-attr">version:</span> <span class="hljs-number">1.1</span>
+
+...
+
+<span class="hljs-attr">documents:</span>
+<span class="hljs-attr">  root:</span>
+<span class="hljs-attr">    encodes:</span> DatabaseConfigNode
+<span class="hljs-attr">  fragments:</span>
+<span class="hljs-attr">    encodes:</span>
+<span class="hljs-attr">      DatabaseServer:</span> DatabaseServerNode
+</code></pre>
+<p>In this case we define a fragment named <code>DatabaseServer</code> encoding a <code>DatabaseServerNode</code>.</p>
+<p>With this dialect definition, we can create fragments declaring metadata about database servers with the semantics of the <code>Infrastructure</code> vocabulary, for example in the <code>aml/modular/server.yaml</code>:</p>
+<p><em>server.yaml</em></p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%DatabaseServer / DB Config 1.1</span>
+
+<span class="hljs-attr">host:</span> localhost
+<span class="hljs-attr">port:</span> <span class="hljs-number">5001</span>
+<span class="hljs-attr">driver:</span> mysql
+</code></pre>
+<p>An these fragments can be linked from the configuration document, using the <code>!include</code> linking directive:</p>
+<p><em>db2.yaml</em></p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%DB Config 1.1</span>
+
+<span class="hljs-attr">server:</span> !include server.yaml
+
+<span class="hljs-attr">dbs:</span>
+<span class="hljs-attr">  dev:</span>
+<span class="hljs-attr">    name:</span> accounts_dev
+<span class="hljs-attr">    username:</span> jsmith
+<span class="hljs-attr">  test:</span>
+<span class="hljs-attr">    name:</span> accounts_test
+<span class="hljs-attr">    username:</span> jsmith
+</code></pre>
+<h2 id="libraries-of-reusable-entities">Libraries of reusable entities</h2>
+<p>Another common use case is to define related collections of metadata entities that can be reused across different documents.</p>
+<p>AML supports these modular collections through the definition of metadata libraries.
+Libraries are defined in the <code>documents</code> section using the <code>libraries</code> property. This node keeps a map of declarations for the library, including name of the declaration and typed of declared nodes.</p>
+<p>The version 1.2 of the <code>DB Config</code> dialect, located at <code>aml/modular/dialect/database_configuration_3.yaml</code> includes the declaration of libraries of servers:</p>
+<p><em>database_configuration_3.yaml</em></p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Dialect 1.0</span>
+
+<span class="hljs-attr">dialect:</span> DB Config
+<span class="hljs-attr">version:</span> <span class="hljs-number">1.2</span>
+
+...
+
+<span class="hljs-attr">documents:</span>
+<span class="hljs-attr">  root:</span>
+<span class="hljs-attr">    encodes:</span> DatabaseConfigNode
+<span class="hljs-attr">  fragments:</span>
+<span class="hljs-attr">    encodes:</span>
+<span class="hljs-attr">      DatabaseServer:</span> DatabaseServerNode
+<span class="hljs-attr">  library:</span>
+<span class="hljs-attr">    declares:</span>
+<span class="hljs-attr">      servers:</span> DatabaseServerNode
+</code></pre>
+<p>After this dialect definitions, metadata documents containing libraries of servers can be defined, like the one located at <code>aml/modular/servers_library.yaml</code>:</p>
+<p><em>servers_library.yaml</em></p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Library / DB Config 1.2</span>
+
+<span class="hljs-attr">servers:</span>
+
+<span class="hljs-attr">  local_mysql:</span>
+<span class="hljs-attr">    host:</span> localhost
+<span class="hljs-attr">    port:</span> <span class="hljs-number">5001</span>
+<span class="hljs-attr">    driver:</span> mysql
+
+<span class="hljs-attr">  local_postgres:</span>
+<span class="hljs-attr">    host:</span> localhost
+<span class="hljs-attr">    port:</span> <span class="hljs-number">5432</span>
+<span class="hljs-attr">    driver:</span> postgres
+
+<span class="hljs-attr">  production_mysql:</span>
+<span class="hljs-attr">    host:</span> db.myapp.com
+<span class="hljs-attr">    port:</span> <span class="hljs-number">9501</span>
+<span class="hljs-attr">    driver:</span> mysql
+</code></pre>
+<p>And these libraries can be referenced from configuration document using library reference aliases, as in <code>aml/modular/db3.yaml</code>:</p>
+<p><em>db3.yaml</em></p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%DB Config 1.2</span>
+
+<span class="hljs-attr">uses:</span>
+<span class="hljs-attr">  servers:</span> servers_library.yaml
+
+<span class="hljs-attr">server:</span> servers.local_mysql
+
+<span class="hljs-attr">dbs:</span>
+<span class="hljs-attr">  dev:</span>
+<span class="hljs-attr">    name:</span> accounts_dev
+<span class="hljs-attr">    username:</span> jsmith
+<span class="hljs-attr">  test:</span>
+<span class="hljs-attr">    name:</span> accounts_test
+<span class="hljs-attr">    username:</span> jsmith
+</code></pre>
+<p>Instead of library reference aliases, <code>$ref</code> linking directives can also be used, for example in this JSON representation of the same metadata:</p>
+<p><em>db3.json</em></p>
+<pre><code class="lang-json">{
+    <span class="hljs-string">&quot;$dialect&quot;</span>: <span class="hljs-string">&quot;DB Config 1.2&quot;</span>,
+    <span class="hljs-string">&quot;server&quot;</span>: { <span class="hljs-string">&quot;$ref&quot;</span>: <span class="hljs-string">&quot;servers_library.yaml#/servers/local_mysql&quot;</span>},
+    <span class="hljs-string">&quot;dbs&quot;</span>: {
+        <span class="hljs-string">&quot;dev&quot;</span>: {
+            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;accounts_dev&quot;</span>,
+            <span class="hljs-string">&quot;username&quot;</span>: <span class="hljs-string">&quot;jsmith&quot;</span>
+        },
+        <span class="hljs-string">&quot;test&quot;</span>: {
+            <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;accounts_test&quot;</span>,
+            <span class="hljs-string">&quot;username&quot;</span>: <span class="hljs-string">&quot;jsmith&quot;</span>
+        }
+    }
+}
+</code></pre>
+<h2 id="parsing-and-resolving-with-amf">Parsing and resolving with AMF</h2>
+<p>AMF can be used to parse modular metadata documents containing links.
+By default, AMF will produce a JSON-LD document encoding a graph where links among documents will remain explicit using the <code>doc:link-target</code> property where all the linked documents will be eagerly followed and added to the <code>doc:references</code> list.</p>
+<p>Different types of documents in the graph will be marked with different semantics.</p>
+<ul>
+<li>Fragments will be marked with the <code>doc:Fragment</code> class</li>
+<li>Libraries will be marked with the <code>doc:Module</code> class</li>
+</ul>
+<p>For example, to parse the version 1.1 of the database document, using a fragment, AMF can be used:</p>
+<pre><code class="lang-bash">examples [master] $ java -jar amf.jar parse -ds file://aml/modular/dialect/database_configuration_2.yaml -in <span class="hljs-string">&quot;AML 1.0&quot;</span> -mime-in application/yaml -ctx <span class="hljs-literal">true</span> file://aml/modular/db2.yaml
+[
+  {
+    <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;#&quot;</span>,
+    <span class="hljs-string">&quot;@type&quot;</span>: [
+      <span class="hljs-string">&quot;meta:DialectInstance&quot;</span>,
+      <span class="hljs-string">&quot;doc:Document&quot;</span>,
+      <span class="hljs-string">&quot;doc:Fragment&quot;</span>,
+      <span class="hljs-string">&quot;doc:Module&quot;</span>,
+      <span class="hljs-string">&quot;doc:Unit&quot;</span>
+    ],
+    <span class="hljs-string">&quot;meta:definedBy&quot;</span>: [
+      {
+        <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#&quot;</span>
+      }
+    ],
+    <span class="hljs-string">&quot;doc:encodes&quot;</span>: [
+      {
+        <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;#/&quot;</span>,
+        <span class="hljs-string">&quot;@type&quot;</span>: [
+          <span class="hljs-string">&quot;http://mycompany.com/vocabularies/config#ConfigurationItem&quot;</span>,
+          <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#/declarations/DatabaseConfigNode&quot;</span>,
+          <span class="hljs-string">&quot;meta:DialectDomainElement&quot;</span>,
+          <span class="hljs-string">&quot;doc:DomainElement&quot;</span>
+        ],
+        <span class="hljs-string">&quot;http://mycompany.com/vocabularies/config#configured&quot;</span>: [
+          {
+            <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;#/server&quot;</span>,
+            <span class="hljs-string">&quot;@type&quot;</span>: [
+              <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#DatabaseServer&quot;</span>,
+              <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#/declarations/DatabaseServerNode&quot;</span>,
+              <span class="hljs-string">&quot;meta:DialectDomainElement&quot;</span>,
+              <span class="hljs-string">&quot;doc:DomainElement&quot;</span>
+            ],
+            <span class="hljs-string">&quot;doc:link-target&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/server.yaml#/&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;doc:link-label&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;server.yaml&quot;</span>
+              }
+            ]
+          }
+        ],
+        <span class="hljs-string">&quot;http://mycompany.com/dialects/dbconfig#dbs&quot;</span>: [
+         ...
+        ]
+      }
+    ],
+    <span class="hljs-string">&quot;doc:references&quot;</span>: [
+      {
+        <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/server.yaml#&quot;</span>,
+        <span class="hljs-string">&quot;@type&quot;</span>: [
+          <span class="hljs-string">&quot;meta:DialectInstanceFragment&quot;</span>,
+          <span class="hljs-string">&quot;doc:Fragment&quot;</span>,
+          <span class="hljs-string">&quot;doc:Unit&quot;</span>
+        ],
+        <span class="hljs-string">&quot;meta:definedBy&quot;</span>: [
+          {
+            <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#&quot;</span>
+          }
+        ],
+        <span class="hljs-string">&quot;doc:encodes&quot;</span>: [
+          {
+            <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/server.yaml#/&quot;</span>,
+            <span class="hljs-string">&quot;@type&quot;</span>: [
+              <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#DatabaseServer&quot;</span>,
+              <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#/declarations/DatabaseServerNode&quot;</span>,
+              <span class="hljs-string">&quot;meta:DialectDomainElement&quot;</span>,
+              <span class="hljs-string">&quot;doc:DomainElement&quot;</span>
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#driver&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;mysql&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#endpoint&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;localhost&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#port&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: 5001
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    <span class="hljs-string">&quot;@context&quot;</span>: {
+      <span class="hljs-string">&quot;@base&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/db2.yaml&quot;</span>,
+      <span class="hljs-string">&quot;doc&quot;</span>: <span class="hljs-string">&quot;http://a.ml/vocabularies/document#&quot;</span>,
+      <span class="hljs-string">&quot;meta&quot;</span>: <span class="hljs-string">&quot;http://a.ml/vocabularies/meta#&quot;</span>,
+      <span class="hljs-string">&quot;schema-org&quot;</span>: <span class="hljs-string">&quot;http://schema.org/&quot;</span>
+    }
+  }
+]
+</code></pre>
+<p>Sometimes, we want to work with the final graph of metadata, where all the explicit links have been replaced by standard JSON-LD links. In the process all the <code>doc:references</code> relationships disappear and a single unit is generated. This process is known as <code>resolution</code> in AMF.</p>
+<p>You can trigger the resolution process in AMF programmatically or passing the <code>--resolve true</code> argument to the command line tool:</p>
+<pre><code class="lang-bash">examples [master] $ java -jar amf.jar parse -ds file://aml/modular/dialect/database_configuration_2.yaml -in <span class="hljs-string">&quot;AML 1.0&quot;</span> -mime-in application/yaml -ctx <span class="hljs-literal">true</span> --resolve <span class="hljs-literal">true</span> file://aml/modular/db2.yaml
+[
+  {
+    <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;#&quot;</span>,
+    <span class="hljs-string">&quot;@type&quot;</span>: [
+      <span class="hljs-string">&quot;meta:DialectInstance&quot;</span>,
+      <span class="hljs-string">&quot;doc:Document&quot;</span>,
+      <span class="hljs-string">&quot;doc:Fragment&quot;</span>,
+      <span class="hljs-string">&quot;doc:Module&quot;</span>,
+      <span class="hljs-string">&quot;doc:Unit&quot;</span>
+    ],
+    <span class="hljs-string">&quot;meta:definedBy&quot;</span>: [
+      {
+        <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#&quot;</span>
+      }
+    ],
+    <span class="hljs-string">&quot;doc:encodes&quot;</span>: [
+      {
+        <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;#/&quot;</span>,
+        <span class="hljs-string">&quot;@type&quot;</span>: [
+          <span class="hljs-string">&quot;http://mycompany.com/vocabularies/config#ConfigurationItem&quot;</span>,
+          <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#/declarations/DatabaseConfigNode&quot;</span>,
+          <span class="hljs-string">&quot;meta:DialectDomainElement&quot;</span>,
+          <span class="hljs-string">&quot;doc:DomainElement&quot;</span>
+        ],
+        <span class="hljs-string">&quot;http://mycompany.com/vocabularies/config#configured&quot;</span>: [
+          {
+            <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/server.yaml#/&quot;</span>,
+            <span class="hljs-string">&quot;@type&quot;</span>: [
+              <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#DatabaseServer&quot;</span>,
+              <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#/declarations/DatabaseServerNode&quot;</span>,
+              <span class="hljs-string">&quot;meta:DialectDomainElement&quot;</span>,
+              <span class="hljs-string">&quot;doc:DomainElement&quot;</span>
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#driver&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;mysql&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#endpoint&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;localhost&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#port&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: 5001
+              }
+            ]
+          }
+        ],
+        <span class="hljs-string">&quot;http://mycompany.com/dialects/dbconfig#dbs&quot;</span>: [
+          {
+            <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;#/dbs/dev&quot;</span>,
+            <span class="hljs-string">&quot;@type&quot;</span>: [
+              <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#Database&quot;</span>,
+              <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#/declarations/DatabaseNode&quot;</span>,
+              <span class="hljs-string">&quot;meta:DialectDomainElement&quot;</span>,
+              <span class="hljs-string">&quot;doc:DomainElement&quot;</span>
+            ],
+            <span class="hljs-string">&quot;schema-org:name&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;accounts_dev&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/config#username&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;jsmith&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/config#environment&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;dev&quot;</span>
+              }
+            ]
+          },
+          {
+            <span class="hljs-string">&quot;@id&quot;</span>: <span class="hljs-string">&quot;#/dbs/test&quot;</span>,
+            <span class="hljs-string">&quot;@type&quot;</span>: [
+              <span class="hljs-string">&quot;http://mycompany.com/vocabularies/infra#Database&quot;</span>,
+              <span class="hljs-string">&quot;file://aml/modular/dialect/database_configuration_2.yaml#/declarations/DatabaseNode&quot;</span>,
+              <span class="hljs-string">&quot;meta:DialectDomainElement&quot;</span>,
+              <span class="hljs-string">&quot;doc:DomainElement&quot;</span>
+            ],
+            <span class="hljs-string">&quot;schema-org:name&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;accounts_test&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/config#username&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;jsmith&quot;</span>
+              }
+            ],
+            <span class="hljs-string">&quot;http://mycompany.com/vocabularies/config#environment&quot;</span>: [
+              {
+                <span class="hljs-string">&quot;@value&quot;</span>: <span class="hljs-string">&quot;test&quot;</span>
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    <span class="hljs-string">&quot;@context&quot;</span>: {
+      <span class="hljs-string">&quot;@base&quot;</span>: <span class="hljs-string">&quot;file://aml/modular/db2.yaml&quot;</span>,
+      <span class="hljs-string">&quot;doc&quot;</span>: <span class="hljs-string">&quot;http://a.ml/vocabularies/document#&quot;</span>,
+      <span class="hljs-string">&quot;meta&quot;</span>: <span class="hljs-string">&quot;http://a.ml/vocabularies/meta#&quot;</span>,
+      <span class="hljs-string">&quot;schema-org&quot;</span>: <span class="hljs-string">&quot;http://schema.org/&quot;</span>
+    }
+  }
+]
+</code></pre>
 
                                 
                                 </section>
@@ -332,7 +765,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Modularization","level":"2.2","depth":1,"next":{"title":"Parsing","level":"3.1","depth":1,"path":"programming/parsing.md","ref":"programming/parsing.md","articles":[]},"previous":{"title":"Quickstart","level":"2.1","depth":1,"path":"quickstart.md","ref":"quickstart.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["github-extractor","codetabs","livereload"],"pluginsConfig":{"livereload":{},"search":{},"codetabs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"github-extractor":{"token":""},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"modularization.md","mtime":"2018-06-16T18:22:58.686Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-16T18:23:08.756Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Modularization","level":"2.2","depth":1,"next":{"title":"Parsing","level":"3.1","depth":1,"path":"programming/parsing.md","ref":"programming/parsing.md","articles":[]},"previous":{"title":"Quickstart","level":"2.1","depth":1,"path":"quickstart.md","ref":"quickstart.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["github-extractor","codetabs","livereload"],"pluginsConfig":{"livereload":{},"search":{},"codetabs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"github-extractor":{"token":""},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"modularization.md","mtime":"2018-06-16T22:01:11.139Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-16T20:33:11.556Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
