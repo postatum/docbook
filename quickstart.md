@@ -1,8 +1,6 @@
-#Quickstart
+# Quickstart
 
 These pages show you how to get up and running as quickly designing metadata documents with AML, including installing all the tools you'll need.
-
-After completing this first tutorial, follow the different guides in this section to learn additional features available in AML.
 
 ## Before you begin
 
@@ -106,7 +104,7 @@ examples [master] $ java -jar amf.jar parse -ds file://aml/quickstart/dialects/p
 
 The following JSON-LD document will be returned in the console:
 
-``` jsonld
+``` json
 [
   {
     "@id": "#",

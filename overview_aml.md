@@ -87,6 +87,7 @@ AML also introduces the [AML Vocabulary](https://aml-org.github.io/aml-spec/voca
 
 For example, we could introduce our own "Personal Information" AML Vocabulary with our own definitions for classes of entities and properties:
 
+
 *personal_info.yaml*
 ``` yaml
 #%Vocabulary 1.0
