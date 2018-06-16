@@ -102,10 +102,10 @@ classTerm:
 propertyTerms:
 
   birth_date:
-    description: date of birth of a persong
+    description: date of birth of a person
 
   full_name:
-    description: full name including surenames
+    description: full name including surnames
 ```
 
 
