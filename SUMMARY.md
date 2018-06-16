@@ -8,8 +8,9 @@
 * [Quickstart](quickstart.md)
 * [Modularization](modularization.md)
 
-## Programming Guides
+## Programming Examples
 
 * [Parsing](programming/parsing.md)
 * [Generating](programming/generating.md)
 * [Validation](programming/validation.md)
+* [Resolution](programming/resolution.md)

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Parsing · GitBook</title>
+        <title>Resolution · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -63,10 +63,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="generating.html" />
     
-    
-    <link rel="prev" href="../modularization.html" />
+    <link rel="prev" href="validation.html" />
     
 
     </head>
@@ -190,7 +188,7 @@
         
         
     
-        <li class="chapter active" data-level="3.1" data-path="parsing.html">
+        <li class="chapter " data-level="3.1" data-path="parsing.html">
             
                 <a href="parsing.html">
             
@@ -229,7 +227,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4" data-path="resolution.html">
+        <li class="chapter active" data-level="3.4" data-path="resolution.html">
             
                 <a href="resolution.html">
             
@@ -272,7 +270,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Parsing</a>
+        <a href=".." >Resolution</a>
     </h1>
 </div>
 
@@ -287,23 +285,25 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="parsing">Parsing</h1>
-<p>The AML parser can be found in the <code>Aml10Parser</code> class. All parsing methods are asynchronous, and either returns a promise/future as a result.</p>
-<p>Before parsing a dialect instance, the dialect must be registered using the <code>AMF.registerDialect</code> function.</p>
+                                <h1 id="resolution">Resolution</h1>
+<p>AMF can be used to resolve parsed AML models. The generic resolution logic is available in the class <code>Resolver</code>.</p>
+<p>The type of model to be resolved must be passed as an argument to the constructor. For any AML Dialect, <code>&quot;AML 1.0&quot;</code> must be passed as the argument.</p>
 <h2 id="example">Example</h2>
 <p><div class="codetabs"><div class="codetabs-header"><div class="tab active" data-codetab="0">Java</div><div class="tab" data-codetab="1">JavaScript</div></div><div class="codetabs-body"><div class="tab active" data-codetab="0"><pre><code class="lang-java"><span class="hljs-keyword">package</span> aml_org.examples;
 
 <span class="hljs-keyword">import</span> amf.client.AMF;
 <span class="hljs-keyword">import</span> amf.client.model.document.DialectInstance;
 <span class="hljs-keyword">import</span> amf.client.parse.Aml10Parser;
+<span class="hljs-keyword">import</span> amf.client.render.AmfGraphRenderer;
+<span class="hljs-keyword">import</span> amf.client.resolve.Resolver;
 
 <span class="hljs-keyword">import</span> java.util.concurrent.ExecutionException;
 
 <span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> java.lang.System.out;
 
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Parsing</span> </span>{
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Resolving</span> </span>{
 
-    <span class="hljs-comment">//#parsing-example</span>
+    <span class="hljs-comment">//#resolving-example</span>
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> ExecutionException, InterruptedException </span>{
 
         AMF.init().get();
@@ -312,44 +312,38 @@
 
         DialectInstance model = (DialectInstance) <span class="hljs-keyword">new</span> Aml10Parser().parseFileAsync(<span class="hljs-string">&quot;file://aml/music/playlist1.yaml&quot;</span>).get();
 
-        displayEncodedElement(model);
-    }
+        DialectInstance resolvedModel = (DialectInstance) <span class="hljs-keyword">new</span> Resolver(<span class="hljs-string">&quot;AML 1.0&quot;</span>).resolve(model);
 
-    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">displayEncodedElement</span><span class="hljs-params">(DialectInstance model)</span> </span>{
-        out.println(<span class="hljs-string">&quot;Encoded element:&quot;</span>);
-        out.println(<span class="hljs-string">&quot;  &quot;</span> + model.encodes().id());
-        out.println(<span class="hljs-string">&quot;Class terms for element:&quot;</span>);
-        <span class="hljs-keyword">for</span> (String type : model.encodes().getTypeUris()) {
-            out.println(<span class="hljs-string">&quot; - &quot;</span> + type);
-        }
-    }
+        String parsedJsonLd = <span class="hljs-keyword">new</span> AmfGraphRenderer().generateString(resolvedModel).get();
 
+        out.println(parsedJsonLd);
+
+    }
 }
 
 
 </code></pre></div><div class="tab" data-codetab="1"><pre><code class="lang-js"><span class="hljs-keyword">var</span> amf = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;amf-client-js&quot;</span>);
 <span class="hljs-keyword">var</span> AMF = amf.AMF;
+<span class="hljs-keyword">var</span> Resolver = amf.Resolver;
 <span class="hljs-keyword">var</span> Aml10Parser = amf.Aml10Parser;
+<span class="hljs-keyword">var</span> AmfGraphRenderer = amf.AmfGraphRenderer;
 
-<span class="hljs-comment">//#validation-example</span>
+<span class="hljs-comment">//#resolving-example</span>
 AMF.init()
     .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-        <span class="hljs-keyword">return</span> AMF.registerDialect(<span class="hljs-string">&quot;file://aml/music/dialect/playlist.yaml&quot;</span>)
+        <span class="hljs-keyword">return</span> AMF.registerDialect(<span class="hljs-string">&quot;file://aml/music/dialect/playlist.yaml&quot;</span>);
     })
     .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-        <span class="hljs-keyword">new</span> Aml10Parser()
-            .parseFileAsync(<span class="hljs-string">&quot;file://aml/music/playlist1.yaml&quot;</span>)
-            .then(displayEncodedElement);
-    });
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">displayEncodedElement</span>(<span class="hljs-params">model</span>) </span>{
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Encoded element:&quot;</span>);
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;  &quot;</span> + model.encodes.id);
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Class terms for element:&quot;</span>);
-    model.encodes.getTypeUris().forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type</span>) </span>{
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot; - &quot;</span> + type);
-    });
-}</code></pre></div></div></div></p>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Aml10Parser()
+            .parseFileAsync(<span class="hljs-string">&quot;file://aml/music/playlist1.yaml&quot;</span>);
+    })
+    .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">unit</span>) </span>{
+        <span class="hljs-keyword">var</span> resolved = <span class="hljs-keyword">new</span> Resolver(<span class="hljs-string">&quot;AML 1.0&quot;</span>).resolve(unit);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> AmfGraphRenderer().generateString(resolved);
+    })
+    .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">jsonld</span>) </span>{
+        <span class="hljs-built_in">console</span>.log(jsonld)
+    });</code></pre></div></div></div></p>
 
                                 
                                 </section>
@@ -377,14 +371,10 @@ AMF.init()
 
             
                 
-                <a href="../modularization.html" class="navigation navigation-prev " aria-label="Previous page: Modularization">
+                <a href="validation.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Validation">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="generating.html" class="navigation navigation-next " aria-label="Next page: Generating">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -393,7 +383,7 @@ AMF.init()
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Parsing","level":"3.1","depth":1,"next":{"title":"Generating","level":"3.2","depth":1,"path":"programming/generating.md","ref":"programming/generating.md","articles":[]},"previous":{"title":"Modularization","level":"2.2","depth":1,"path":"modularization.md","ref":"modularization.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["github-extractor","codetabs","livereload"],"pluginsConfig":{"livereload":{},"search":{},"codetabs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"github-extractor":{"token":""},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"programming/parsing.md","mtime":"2018-06-16T07:21:34.148Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-16T20:33:11.556Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Resolution","level":"3.4","depth":1,"previous":{"title":"Validation","level":"3.3","depth":1,"path":"programming/validation.md","ref":"programming/validation.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["github-extractor","codetabs","livereload"],"pluginsConfig":{"livereload":{},"search":{},"codetabs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"github-extractor":{"token":""},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"programming/resolution.md","mtime":"2018-06-16T22:45:45.001Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-16T20:33:11.556Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
