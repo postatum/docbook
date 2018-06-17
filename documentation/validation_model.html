@@ -1,0 +1,945 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>AML validation model · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-codetabs/codetabs.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+        <link rel="stylesheet" href="../styles/website.css">
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="doc_model.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="amf-header box imported is-paddingless">
+    <nav class="nav">
+        <div class="nav-left nav-menu">
+            <span class="logo-wrapper nav-item">
+                <span class="nav-logo-img">
+                    <img src='../images/amlLogo.svg' style="height: 25px">
+                </span>
+                <span class="nav-logo-text">Documentation</span>
+            </span>
+        </div>
+    </nav>
+</div>
+
+  
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Overview</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../overview_aml.html">
+            
+                <a href="../overview_aml.html">
+            
+                    
+                    What is AML?
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../overview_amf.html">
+            
+                <a href="../overview_amf.html">
+            
+                    
+                    What is AMF?
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Tutorials</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../quickstart.html">
+            
+                <a href="../quickstart.html">
+            
+                    
+                    Quickstart
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../modularization.html">
+            
+                <a href="../modularization.html">
+            
+                    
+                    Modularization
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../custom_validations.html">
+            
+                <a href="../custom_validations.html">
+            
+                    
+                    Custom validations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../querying.html">
+            
+                <a href="../querying.html">
+            
+                    
+                    Using the W3C Stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Programming Examples</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../programming/parsing.html">
+            
+                <a href="../programming/parsing.html">
+            
+                    
+                    Parsing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../programming/generating.html">
+            
+                <a href="../programming/generating.html">
+            
+                    
+                    Generating
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../programming/validation.html">
+            
+                <a href="../programming/validation.html">
+            
+                    
+                    Validation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="../programming/resolution.html">
+            
+                <a href="../programming/resolution.html">
+            
+                    
+                    Resolution
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../programming/custom_validation.html">
+            
+                <a href="../programming/custom_validation.html">
+            
+                    
+                    Custom validations
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Documentation</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="doc_model.html">
+            
+                <a href="doc_model.html">
+            
+                    
+                    AML document model
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.2" data-path="validation_model.html">
+            
+                <a href="validation_model.html">
+            
+                    
+                    AML validation model
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >AML validation model</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="aml-validation-model">AML validation model</h1>
+<h2 id="validation-approach">Validation approach</h2>
+<p>AMF includes a powerful validation framework that can be used to define constraints and validate them over parsed models for HTTP APIs or any other type of RAML document.</p>
+<p>AMF validation has the following design goals:</p>
+<ul>
+<li>Validation is explicit</li>
+</ul>
+<p>Constraints over the parsed model are explicit. We want to avoid ambiguity about what is valid and invalid for a particular model. All the constraints defined have explicit identifiers and clients can access the full list of validations and their definitions.</p>
+<ul>
+<li>The validation mechanism is formal</li>
+</ul>
+<p>AMF uses a W3C recommendation <a href="https://www.w3.org/TR/shacl/" target="_blank">SHACL</a>, to implement validation. SHACL provide powerful and clearly defined closed world semantics to validate information models, beyond what can be achieved through more limited validation schema languages like JSON-Schema. Thanks to SHACL sound logical foundation, we can explain easily why a model is invalid.</p>
+<ul>
+<li>Validations can be customised</li>
+</ul>
+<p>AMF introduces the notion of a validation profile. Profiles group validations into sets of related constraints following certain semantics or standard requirements. RAML 1.0,RAML 0.8, OAS 2.0 are valid profiles that will ensure compatibility between the parsed model and these specifications. Furthermore, clients can create a custom validation profile, selecting the validations that are important for their use case, setting the right severity level for each validation or modifying one of the standard profiles, turning on and off individual validations in that profile.</p>
+<ul>
+<li>Validations can be extended</li>
+</ul>
+<p>AMF validation profiles can be extended with custom validations defined by clients. A declarative approach using AMF validation profile dialect can be used to define new validations or a programmatic mechanism based on JavaScript functions can be followed. Advanced users can always define standard SHACL constraints to have complete control over the validation mechanism.</p>
+<ul>
+<li>Validations are data</li>
+</ul>
+<p>AMF can parse the validation profile for an API and generate a model in the same way it parses the API definition itself. API model and validation profile model can be linked, stored, and queried as a single unified data graph.</p>
+<h3 id="validation-using-data-shapes">Validation using data shapes</h3>
+<p>The main notion in AMF validation is that of a <code>data shape</code>.</p>
+<p>The output of the AMF parser is a data graph where the nodes in the graph and their relationships capture the information of the input RAML or OAS document.</p>
+<p>Data shapes impose restrictions about the valid properties and relationships for the nodes in the parsed data graph, grouped by node type.</p>
+<p>For example, the following extract from a RAML document located at <code>http://exchange.mulesoft.com/myorg/loans.raml</code>:</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">title:</span> Loans API
+<span class="hljs-attr">version:</span> <span class="hljs-number">0.3</span>
+</code></pre>
+<p>Will produce the following data graph:</p>
+<p><img src="../images/validation/example_graph1.png" alt="example1"></p>
+<p>As we can see in the image, the &apos;title&apos; RAML property has been parsed and mapped to the <a href="http://schema.org/name" target="_blank">schema-org &apos;name&apos; property</a> in the parsed model and the &apos;version&apos; property has been mapped to the <a href="http://schema.org/version" target="_blank">schema-org &apos;version&apos; property</a>. At the same time, the main API document located at the root of the document <code>#/</code> has been marked as being an <a href="https://pending.schema.org/WebAPI" target="_blank">instance of schema-org WebAPI class</a>.</p>
+<p>In order to consider the model encoded in this graph as valid, we might want to impose some restrictions for the nodes in the graph of type <code>schema:WebAPI</code>, for example, if certain properties are mandatory or optional, the range of the data type for the properties, etc.
+In order to do this, we can define a &apos;data shape&apos; constraining all instances of the <code>schema:WebAPI</code> type. For example, we can make the version mandatory and impose a pattern for the version string. This can be achieved using AMF validation profile syntax in the following way:</p>
+<pre><code>validations:
+
+  version-constraints:
+    message: Version is mandatory and must be a semantic version M.m.r?
+    targetClass: schema.WebAPI
+    propertyConstraints:
+      schema.version:
+        minCount: 1
+        pattern: &quot;\d+\.\d+(\.\d+)?&quot;
+</code></pre><p>This snippet of text declares a new data shape (identified by &apos;version-constraints&apos;) for all instances of the <code>schema:WebAPI</code> class where for the <code>schema.version</code> property the minimum count of the property must be 1 (making it mandatory) and the value of the property must match the provided regular expression.</p>
+<p>AMF validation will parse this data shape definition and validate that the model complies with all the data shapes defined. If some constraints are not met, a validation report including the node in the graph that violates the constraint, the identifier of the violated constraint and property, a descriptive message and information about the location in the input document of the model information violating the constraint will be generated.</p>
+<h3 id="validation-profiles">Validation Profiles</h3>
+<p>In order to use data shapes in any realistic way, a number of data shapes must be defined and re-used together many times to provide a consistency in different RAML documents. We call these sets of related validations &apos;validation profiles&apos;. AMF allows customers to define validation profiles using a declarative validation syntax.</p>
+<p>Additionally, profiles also support the notion of a severity level for each validation, ranging from <code>VIOLATION</code> to <code>INFO</code>, that can be attached to each specific data shape in the profile.</p>
+<p>Profiles can extend other profiles, adding or re-defining validations, changing the severity level or disabling some of the base profile validations.</p>
+<p>AMF includes by default 3 validation profiles: <a href="validations/raml_profile.raml">RAML</a>, <a href="validations/openapi_profile.raml">OpenAPI</a> and <a href="validations/amf_profile.raml">AMF</a> that follow respectively the constraints defined in the RAML 1.0 specification, OpenAPI 2.0 specification and the common set of validations across both specifications.</p>
+<p>For example, the OpenAPI profile defines a validation to make the &apos;schema:version&apos; property mandatory (identified by amf-parser.mandatory-api-version), but the RAML profile doesn&apos;t include this validation since it is not mandatory in RAML.</p>
+<p>AMF clients can decide if they want to use the OpenAPI or RAML standard profile, create a custom profile inheriting from each of these but adapting some of the data shapes to their own needs or to create a new validation profile completely from scratch.</p>
+<h3 id="validation-architecture">Validation architecture</h3>
+<p>This section describes the technical details of the AMF validation mechanism. If you are just interested into using the validation mechanism and you are not interested into advanced use cases like using SHACL directly, this section can be safely skipped.</p>
+<p>The following diagram shows the main components of the validation mechanism in AMF:</p>
+<p><img src="../images/validation/validation_arch.png" alt="validation arch"></p>
+<p>Validation involves two model graphs:</p>
+<ul>
+<li>data graph</li>
+</ul>
+<p>Generated after parsing the input RAML/OAS document, containing all the information in the domain model, like the HTTP API</p>
+<ul>
+<li>shapes graph</li>
+</ul>
+<p>Generated after parsing a custom or standard validation profile and containing restrictions about the shape of the domain entities in the data graph. Shapes are expressed as SHACL shapes.</p>
+<p>The following diagram shows the standard data shapes that can be expressed in SHACL:</p>
+<p><img src="../images/validation/shacl_diagram.png" alt="shacl shapes"></p>
+<p>Additional shapes can be added to SHACL to define new types of validations. Additionally SHACL also supports JavaScript constraints that can be defined inline as JavaScript code or collected into validation libraries.</p>
+<p>Both graphs, the data graph and the shapes graph, can be serialised using AMF as <a href="https://www.w3.org/TR/json-ld/" target="_blank">JSON-LD</a> documents containing all the information about the graph.</p>
+<p>In order to trigger the validation, both graphs are passed to the standard SHACL 1.0 library that will compute the potential violations according to SHACL semantics and generate a validation report as an output data graph.
+This report can be serialised as a JSON-LD document that can be processed by machines or as a human-friendly textual report.</p>
+<h2 id="validation-profile-syntax">Validation Profile syntax</h2>
+<p>Validation profile documents are defined as a <a href="https://github.com/mulesoft/amf/blob/master/vocabularies/dialects/validation.raml" target="_blank">RAML Dialect extension</a> (see the documentation about RAML Vocabulary and Dialect to know how to work with RAML extensions).</p>
+<h3 id="header-and-dialect-document-type">Header and dialect document type</h3>
+<p>The header identifying the Validation Profile dialect and the current 1.0 version is:</p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Validation Profile 1.0</span>
+</code></pre>
+<p>This header is mandatory in all validation profile documents.</p>
+<h3 id="profile-node">Profile node</h3>
+<p>The main node in a Validation Profile document is the Profile node.</p>
+<p>These are the possible properties in the node:</p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>description</th>
+<th>range</th>
+<th>allow multiple values</th>
+<th>is map</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>profile</td>
+<td>Name for the custom profile</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>prefixes</td>
+<td>Map of prefixes used to build identifiers in validation of dialects</td>
+<td>(String,String)</td>
+<td>true</td>
+<td>true</td>
+</tr>
+<tr>
+<td>description?</td>
+<td>Human readable description of the profile</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>extends?</td>
+<td>Base profile this profile is extending</td>
+<td>string: RAML, OpenAPI, AMF</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>violation?</td>
+<td>List of validations identifiers that will have VIOLATION severity</td>
+<td>string</td>
+<td>true</td>
+<td>true</td>
+</tr>
+<tr>
+<td>warning?</td>
+<td>List of validations identifiers that will have WARNING severity</td>
+<td>string</td>
+<td>true</td>
+<td>false</td>
+</tr>
+<tr>
+<td>info?</td>
+<td>List of validations identifiers that will have INFO severity</td>
+<td>string</td>
+<td>true</td>
+<td>false</td>
+</tr>
+<tr>
+<td>disabled?</td>
+<td>List of validations from the extended profile that will be disabled</td>
+<td>string</td>
+<td>true</td>
+<td>false</td>
+</tr>
+<tr>
+<td>validations?</td>
+<td>List of custom data shapes defining validations in this profile</td>
+<td>ShapeValidation node or FunctionValidation node</td>
+<td>-</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<p>In order to change the severity level or disable a validation, the identifier of the validation must be added to the right section of the document.
+Refer to the list of standard validations defined for each profile to find which validations can be modified.</p>
+<p>The following example defines a new profile named <code>Custom</code> extending the <a href="validations/raml_profile.raml">RAML standard profile</a> and disabling the <code>amf-parser.raml-status-code</code> validation including in that profile.</p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Validation Profile 1.0</span>
+
+<span class="hljs-attr">profile:</span> Custom
+
+<span class="hljs-attr">extends:</span> RAML
+
+<span class="hljs-attr">disabled:</span>
+<span class="hljs-bullet">  -</span> amf-parser.raml-status-code
+</code></pre>
+<p>Also note that declaring a validation to the map of <code>validations</code> does not automatically enable it. Custom validation must still be added to the section with the right severity level for them to be effective.</p>
+<h3 id="identifying-classes-and-properties">Identifying classes and properties</h3>
+<p>AMF Validation support identifiers for the standard domain elements generated by the AMF parser for RAML and OpenAPI.
+If you want to other classes and properties, for example when working with dialects, the URI of the element or register a prefix to use CURIEs:</p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Validation Profile 1.0</span>
+
+<span class="hljs-attr">profile:</span> Custom Profile for My Vocabulary
+
+<span class="hljs-attr">prefixes:</span>
+<span class="hljs-attr">  myvocab:</span> http://myorg.com/vocabularies/myvocab<span class="hljs-comment">#</span>
+</code></pre>
+<p>Now we could identify target classes and properties using CURIEs like <code>myvocab.MyClass</code> or <code>myvocab.MyProperty</code>.</p>
+<h3 id="shapevalidation-node">ShapeValidation node</h3>
+<p>Custom data shapes can be defined declaratively as <code>ShapeValidation</code> nodes that can be added to the <code>validations</code> property in the profile document.</p>
+<p>These are the properties of a shape validation:</p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>description</th>
+<th>range</th>
+<th>alllow multiple values</th>
+<th>is map</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>message?</td>
+<td>Error message that will be returned in case of a violation</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>targetClass</td>
+<td>Identifier of the class in the AMF parsed model the data shape will be validating. It must be a valid class identifier in the model</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>propertyConstraints</td>
+<td>map of property constraints for the data shape</td>
+<td>PropertyConstriaint node</td>
+<td>-</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<p>Each data shape can contain one or more constraints over properties for the class defined in a property constraint node.</p>
+<p>The following example introduces a shape validation redefining the valid values for the status code of a response:</p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Validation Profile 1.0</span>
+
+<span class="hljs-attr">profile:</span> Custom
+
+<span class="hljs-attr">extends:</span> RAML
+
+<span class="hljs-attr">disabled:</span>
+<span class="hljs-bullet">  -</span> amf-parser.raml-status-code
+
+<span class="hljs-attr">violation:</span>
+<span class="hljs-bullet">  -</span> my-status-code
+
+<span class="hljs-attr">validations:</span>
+
+<span class="hljs-attr">  my-status-code:</span>
+<span class="hljs-attr">    message:</span> Invalid status code value
+<span class="hljs-attr">    targetClass:</span> http.statusCode
+<span class="hljs-attr">    propertyConstraint:</span> hydra.statusCode
+    hydra.statusCode:
+<span class="hljs-attr">      pattern:</span> ^(ok|failure|exception)$
+</code></pre>
+<p>After adding this constrint and disabling the standard RAML status code validation, the following fragment from RAML document will be valid:</p>
+<pre><code class="lang-yaml">/endpoint:
+<span class="hljs-attr">  get:</span>
+<span class="hljs-attr">    responses:</span>
+<span class="hljs-attr">      ok:</span>
+<span class="hljs-attr">      failure:</span>
+<span class="hljs-attr">      exception:</span>
+</code></pre>
+<h3 id="propertyconstraint-node">PropertyConstraint node</h3>
+<p>Each property constraint node is built as a map with keys targeting properties in the AMF parsed model and the constraints for that property in the model.</p>
+<p>The following table defines the constraints that can be used to define the shape of the property in the model:</p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>description</th>
+<th>range</th>
+<th>alllow multiple values</th>
+<th>is map</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pattern?</td>
+<td>Regular expression</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>minLength?</td>
+<td>Minimum length of a string</td>
+<td>integer</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>maxLength?</td>
+<td>Maximum length of a string</td>
+<td>integer</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>maxCount?</td>
+<td>Maximum cardinality for the parsed property</td>
+<td>integer</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>minCount?</td>
+<td>Minimum cardinality for the parsed property</td>
+<td>integer</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>minExclusive?</td>
+<td>Minimum exclusive value for the parsed property</td>
+<td>number</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>maxExclusive?</td>
+<td>Maximum exclusive value for the parsed property</td>
+<td>number</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>minInclusive?</td>
+<td>Minimum inclusive value for the parsed property</td>
+<td>number</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>maxInclusive?</td>
+<td>Maximum inclusive value for the parsed property</td>
+<td>number</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>in?</td>
+<td>Enumeration of values allowed for the property</td>
+<td>any</td>
+<td>true</td>
+<td>false</td>
+</tr>
+<tr>
+<td>range?</td>
+<td>Literal range of a property from string, integer, float, anyUri, boolean</td>
+<td>false</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<p>A single property constraint can have more than one constraint in the map of constraints.</p>
+<h3 id="functionvalidation-node">FunctionValidation node</h3>
+<p>Alternatively, validations can be defined programmatically using JavaScript functions.</p>
+<p>FunctionConstraint nodes are added to the <code>validations</code> property by the name of the function constraint and can have the following properties:</p>
+<table>
+<thead>
+<tr>
+<th>property</th>
+<th>description</th>
+<th>range</th>
+<th>alllow multiple values</th>
+<th>is map</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>message?</td>
+<td>Error message that will be returned in case of a violation</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>targetClass</td>
+<td>Identifier of the class in the AMF parsed model the data shape will be validating. It must be a valid class identifier in the model</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>code?</td>
+<td>JavaScript function that will be invoked to check if a violation has happened for the instance of the target class passed as an argument</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>libraries?</td>
+<td>URLs pointing to JavaScript files including function definitions that will can be used in the validation</td>
+<td>string</td>
+<td>true</td>
+<td>false</td>
+</tr>
+<tr>
+<td>functionName?</td>
+<td>Name of a function in one of the libraries that will be used to check if a violation has happend for the instance of the target class passed as an argument</td>
+<td>string</td>
+<td>false</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<p>Validation functions must be coded as anonymous functions accepting as single input the node in the model encoded as JSON-LD in expanded form  that is an instance of <code>targetClass</code>.
+Validation functions must return <code>true</code> if no constraint violation is found or <code>false</code> to signal a validation error.</p>
+<h4 id="js-validation-api">JS Validation API</h4>
+<p>AMF validation provides a minimal interface to help build the validation functions:</p>
+<p>In order to traverse the model, prefixes for all the namespaces in the model have been defined:</p>
+<pre><code class="lang-json">{
+  <span class="hljs-string">&quot;raml-shapes&quot;</span>:<span class="hljs-string">&quot;http://raml.org/vocabularies/shapes#&quot;</span>,
+  <span class="hljs-string">&quot;shacl&quot;</span>:      <span class="hljs-string">&quot;http://www.w3.org/ns/shacl#&quot;</span>,
+  <span class="hljs-string">&quot;amf-parser&quot;</span>: <span class="hljs-string">&quot;http://raml.org/vocabularies/amf/parser#&quot;</span>,
+  <span class="hljs-string">&quot;rdfs&quot;</span>:       <span class="hljs-string">&quot;http://www.w3.org/2000/01/rdf-schema#&quot;</span>,
+  <span class="hljs-string">&quot;doc&quot;</span>:        <span class="hljs-string">&quot;http://raml.org/vocabularies/document#&quot;</span>,
+  <span class="hljs-string">&quot;data&quot;</span>:       <span class="hljs-string">&quot;http://raml.org/vocabularies/data#&quot;</span>,
+  <span class="hljs-string">&quot;owl&quot;</span>:        <span class="hljs-string">&quot;http://www.w3.org/2002/07/owl#&quot;</span>,
+  <span class="hljs-string">&quot;meta&quot;</span>:       <span class="hljs-string">&quot;http://raml.org/vocabularies/meta#&quot;</span>,
+  <span class="hljs-string">&quot;sourcemaps&quot;</span>: <span class="hljs-string">&quot;http://raml.org/vocabularies/document-source-maps#&quot;</span>,
+  <span class="hljs-string">&quot;rdf&quot;</span>:        <span class="hljs-string">&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;</span>,
+  <span class="hljs-string">&quot;xsd&quot;</span>:        <span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema#&quot;</span>,
+  <span class="hljs-string">&quot;schema&quot;</span>:     <span class="hljs-string">&quot;http://schema.org/&quot;</span>,
+  <span class="hljs-string">&quot;http&quot;</span>:       <span class="hljs-string">&quot;http://raml.org/vocabularies/http#&quot;</span>,
+  <span class="hljs-string">&quot;sh&quot;</span>:         <span class="hljs-string">&quot;http://www.w3.org/ns/shacl#&quot;</span>,
+  <span class="hljs-string">&quot;hydra&quot;</span>:      <span class="hljs-string">&quot;http://www.w3.org/ns/hydra/core#&quot;</span>
+}
+</code></pre>
+<p>This means that validation code can use <a href="http://www.w3.org/TR/curie" target="_blank">CURIEs</a> to traverse the model JSON-LD structure instead of full URIs</p>
+<p>For example the following validation targets the requests in the endpoints. In the validation function to get to the headers, we can just use <code>http:header</code> instead of the full URI <code>http://raml.org/vocabularies/http#header</code>:
+Notice that since we are working with the JSON-LD graph in expanded form, the value of a property will always be an array, even if the property has a single value.</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">validations:</span>
+
+<span class="hljs-attr">  test-validation:</span>
+<span class="hljs-attr">    message:</span> All requests should have headers
+<span class="hljs-attr">    targetClass:</span> http.Request
+<span class="hljs-attr">    functionConstraint:</span>
+<span class="hljs-attr">      code:</span> <span class="hljs-string">|
+        function(request) {
+          var headers = request[http:header];
+          return headers.length &gt; 0;
+        }
+</span></code></pre>
+<p>Sometimes we need to traverse the model from the root node using a chain of properties. the <code>path</code> function can be used for this. It accepts a sequence of properties and will try to follow the path returning all the accumulated values found for the path.
+Paths are expressed as sequences of CURIEs joined by the <code>/</code> separator.</p>
+<p>For example, imagine we need to modify the previous validation to check that a particular header with a name is present in all the requests. In order to do this, we need to traverse from the http:Request to the header (http:header) and from there to the name of each header (schema:header) and check that the name of the property is present. Instead of nesting loops, we could use the <code>path</code> property for this:</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">validations:</span>
+
+<span class="hljs-attr">  test-validation:</span>
+<span class="hljs-attr">    message:</span> Header x-token is mandatory in all requests
+<span class="hljs-attr">    targetClass:</span> http.Request
+<span class="hljs-attr">    functionConstraint:</span>
+<span class="hljs-attr">      code:</span> <span class="hljs-string">|
+        function(request) {
+          var pathChain = &apos;http:header / schema:name&apos;;
+          var headerNames = path(request, pathChain);
+          for (var i=0; i&lt;headerNames.length; i++) {
+            if (headerNames[i] === &quot;x-token&quot;)
+              return true;
+          }
+        }
+</span></code></pre>
+<p>Validation functions should be stateless, since each validation function is executed independently. However, for certain checks we need to keep state through invocations. In order to accomplish this the validation engine offers a global <code>accumulators</code> hash persistent between validation function invocations. Validation functions can use this hash to keep state in order to compute certain restrictrions.</p>
+<p>For example, let&apos;s imagine we need to create a validation checking that the name of the endpoints (resources in RAML, path items in OpenAPI) are unique. For that we can use the <code>accumulators</code> hash to store the names of the endpoints and find duplicated values:</p>
+<pre><code class="lang-yaml"><span class="hljs-attr">validations:</span>
+
+<span class="hljs-attr">  unique-identifiers:</span>
+<span class="hljs-attr">    message:</span> Resource names must be unique
+<span class="hljs-attr">    targetClass:</span> http.EndPoint
+<span class="hljs-attr">    functionConstraint:</span>
+<span class="hljs-attr">      code:</span> <span class="hljs-string">|
+        function(resource) {
+          var name = (resource[&apos;schema:name&apos;] || [])[0];
+          if(accumulators[name] == null) {
+            accumulators[name] = true;
+            return true;
+          } else {
+            return false;
+          }
+        }
+</span></code></pre>
+<h3 id="modular-validation-profiles-libraries">Modular Validation Profiles: Libraries</h3>
+<p>Validation profiles are RAML documents, as such the Validation Profile dialect defines how to split the description into a profile in libraries of data shapes that can be re-used in multiple profiles.</p>
+<p>To declare a validation data shapes library, the following header must be used:</p>
+<pre><code class="lang-yaml"><span class="hljs-comment">#%Library / Validation Profile 1.0</span>
+</code></pre>
+<p>In the library validations can be declared using the <code>shapes</code> for the ShapeValidation nodes and <code>functions</code> for the FunctionValidation nodes.</p>
+<p>After being declared, validation libraries can be used in a validation profile document using the <code>uses</code> RAML property and providing an alias for the library
+Notice that a name for the data shape or function constraint connected to the <code>validations</code> property  will still be required to be able to use the data shape.</p>
+<h3 id="modular-validation-profiles-typed-fragments">Modular Validation Profiles: Typed fragments</h3>
+<p>In the shame way, data shapes and function constraints can be defined as valid fragments for the Validation Profile dialect and included in a Validation Profile document.</p>
+<p>The required headers for the fragments are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Fragment header</th>
+<th>Node type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#%ShapeValidation / Validation Profile 1.0</td>
+<td>ShapeValidation node</td>
+</tr>
+<tr>
+<td>#%FunctionValidation / Validation Profile 1.0</td>
+<td>FunctionValidation node</td>
+</tr>
+</tbody>
+</table>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="doc_model.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: AML document model">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"AML validation model","level":"4.2","depth":1,"previous":{"title":"AML document model","level":"4.1","depth":1,"path":"documentation/doc_model.md","ref":"documentation/doc_model.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["github-extractor","codetabs","livereload"],"pluginsConfig":{"livereload":{},"search":{},"codetabs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"github-extractor":{"token":""},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"documentation/validation_model.md","mtime":"2018-06-17T02:17:17.094Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-17T23:18:17.132Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-codetabs/codetabs.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
