@@ -25,9 +25,9 @@ This tutorial assumes you have a working version of the AMF comand-line as descr
 
 ## Install Apache Jena
 
-[Apache Jena](https://jena.apache.org/) is a popular Java library to work with semantic and linked data. It can be used as a programming library but also contains a number of command line tools that we will use in this tutorial.
+[Apache Jena](https://jena.apache.org/) is a popular Java library to work with semantic and linked data. It can be used as a programming library, but also contains a number of command-line tools that we will use in this tutorial.
 
-Installing Jena is beyond the scope of this tutorial. Please, consult the site of Jena for your platform. For example, in Mac OS systems, Jena can be installed using [Homebrew](https://brew.sh/)
+Installing Jena is beyond the scope of this tutorial. For information about installation for your platform, see the Jena site. For example, in Mac OS systems, Jena can be installed using [Homebrew](https://brew.sh/)
 
 ``` bash
 music [master] $ brew install jena
@@ -35,7 +35,7 @@ music [master] $ brew install jena
 
 ## Running a query over the graph of metadata
 
-AML documents can be parsed using AMF into a graph of metadata.
+AML documents can be parsed into a graph of metadata using AMF.
 
 This graph is encoded as a JSON-LD document. In this tutorial, we will use Jena to execute a query over this graph of information.
 
@@ -45,15 +45,15 @@ We will generate the resolved graph of information parsing one of the playlist d
 java -jar amf.jar parse -ds file://aml/music/dialect/playlist.yaml -in "AML 1.0" -mime-in application/yaml -ctx true --resolve true aml/music/playlist1.yaml > playlist1.json
 ```
 
-Jena query command line, needs to get the input data as a set of assertions in the [Turtle](https://www.w3.org/TR/turtle/) format. We will use Jena `riot` command line to transform our JSON-LD output file into Turtle and store it in the `playlist.ttl` file:
+The Jena query command line, needs to get the input data as a set of assertions in the [Turtle](https://www.w3.org/TR/turtle/) format. We will use the Jena `riot` command line to transform our JSON-LD output file into Turtle and store it in the `playlist.ttl` file:
 
 ``` bash
 examples [master] $ riot --syntax=JSON-LD playlist1.json --output=TTL > playlist.ttl
 ```
 
-Now we can run a query over the graph after loading it in Jena. The query is going to be expressed in the standard [SPARQL](https://www.w3.org/TR/sparql11-query/) graph query language.
+Now, we can run a query over the graph after loading it into Jena. The query is going to be expressed in the standard [SPARQL](https://www.w3.org/TR/sparql11-query/) graph query language.
 
-We will list 10 songs ordered by song duration and retrieving also the name of the song:
+We will list 10 songs ordered by song duration and also retrieve the name of the song:
 
 ``` bash
 examples [master] $ sparql --data=playlist.ttl "
@@ -81,7 +81,7 @@ examples [master] $ sparql --data=playlist.ttl "
 
 ## Making the graph grow
 
-The graph parsed from AML metadata documents can be grown by just adding assertions parsed from the graph.
+The graph parsed from AML metadata documents can be enlarged by just adding assertions parsed from the graph.
 
 Let's add another playlist to our graph of metadata, parsing the `aml/music/playlist2.yaml` file:
 
@@ -89,7 +89,7 @@ Let's add another playlist to our graph of metadata, parsing the `aml/music/play
 java -jar amf.jar parse -ds file://aml/music/dialect/playlist.yaml -in "AML 1.0" -mime-in application/yaml -ctx true --resolve true aml/music/playlist2.yaml > playlist2.json
 ```
 
-Now we will use Jena to transform the JSON-LD document into additional assertions to our playlist.ttl graph:
+Now, we will use Jena to transform the JSON-LD document into additional assertions to our playlist.ttl graph:
 
 ``` bash
 examples [master] $ riot --syntax=JSON-LD playlist2.json --output=TTL >> playlist.ttl
@@ -125,7 +125,7 @@ examples [master] $ sparql --data=playlist.ttl "
 ------------------------------------------------------------------------------------------------------------------------
 ```
 
-We can use use the relationship between playlists and songs in the graph to introduce that information in the query:
+We can use use the relationship between playlists and songs in the graph to introduce that information into the query:
 
 ``` bash
 examples [master] $ sparql --data=playlist.ttl "
