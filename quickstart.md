@@ -15,7 +15,7 @@ You can download the example from the AML project [examples repository](https://
 
 ```bash
 git clone https://github.com/aml-org/examples.git
-cd examples/quickstart
+cd examples
 ```
 
 ## Build and install the AMF command-line tool

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Parsing · GitBook</title>
+        <title>Custom validations · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -63,10 +63,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="generating.html" />
+    <link rel="next" href="../documentation/doc_model.html" />
     
     
-    <link rel="prev" href="../querying.html" />
+    <link rel="prev" href="resolution.html" />
     
 
     </head>
@@ -216,7 +216,7 @@
         
         
     
-        <li class="chapter active" data-level="3.1" data-path="parsing.html">
+        <li class="chapter " data-level="3.1" data-path="parsing.html">
             
                 <a href="parsing.html">
             
@@ -268,7 +268,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.5" data-path="custom_validation.html">
+        <li class="chapter active" data-level="3.5" data-path="custom_validation.html">
             
                 <a href="custom_validation.html">
             
@@ -344,7 +344,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Parsing</a>
+        <a href=".." >Custom validations</a>
     </h1>
 </div>
 
@@ -359,43 +359,45 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="parsing">Parsing</h1>
-<p>The AML parser can be found in the <code>Aml10Parser</code> class. All parsing methods are asynchronous, and either returns a promise/future as a result.</p>
-<p>Before parsing a dialect instance, the dialect must be registered using the <code>AMF.registerDialect</code> function.</p>
+                                <h1 id="custom-validations">Custom validations</h1>
+<p>AMF can be used to validate parsed AML models with custom validation profiles.
+Before using the custom validation, a Validation Profile valid document instance must be registered using the <code>loadValidationProfile</code> function.</p>
+<p>The name of the validation profile must be passed to the <code>validate</code> function for the custom validations to be applied</p>
 <h2 id="example">Example</h2>
 <p><div class="codetabs"><div class="codetabs-header"><div class="tab active" data-codetab="0">Java</div><div class="tab" data-codetab="1">JavaScript</div></div><div class="codetabs-body"><div class="tab active" data-codetab="0"><pre><code class="lang-java"><span class="hljs-keyword">package</span> aml_org.examples;
 
 <span class="hljs-keyword">import</span> amf.client.AMF;
 <span class="hljs-keyword">import</span> amf.client.model.document.DialectInstance;
 <span class="hljs-keyword">import</span> amf.client.parse.Aml10Parser;
+<span class="hljs-keyword">import</span> amf.client.validate.ValidationReport;
+<span class="hljs-keyword">import</span> amf.client.validate.ValidationResult;
 
 <span class="hljs-keyword">import</span> java.util.concurrent.ExecutionException;
 
 <span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> java.lang.System.out;
 
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Parsing</span> </span>{
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomValidation</span> </span>{
 
-    <span class="hljs-comment">//#parsing-example</span>
+    <span class="hljs-comment">//#custom-validation-example</span>
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> ExecutionException, InterruptedException </span>{
-
         AMF.init().get();
 
         AMF.registerDialect(<span class="hljs-string">&quot;file://aml/music/dialect/playlist.yaml&quot;</span>).get();
 
         DialectInstance model = (DialectInstance) <span class="hljs-keyword">new</span> Aml10Parser().parseFileAsync(<span class="hljs-string">&quot;file://aml/music/playlist1.yaml&quot;</span>).get();
 
-        displayEncodedElement(model);
-    }
+        AMF.loadValidationProfile(<span class="hljs-string">&quot;file://aml/music/custom_validations/boring.yaml&quot;</span>).get();
 
-    <span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">displayEncodedElement</span><span class="hljs-params">(DialectInstance model)</span> </span>{
-        out.println(<span class="hljs-string">&quot;Encoded element:&quot;</span>);
-        out.println(<span class="hljs-string">&quot;  &quot;</span> + model.encodes().id());
-        out.println(<span class="hljs-string">&quot;Class terms for element:&quot;</span>);
-        <span class="hljs-keyword">for</span> (String type : model.encodes().getTypeUris()) {
-            out.println(<span class="hljs-string">&quot; - &quot;</span> + type);
+        ValidationReport report = AMF.validate(model, <span class="hljs-string">&quot;Boring Playlists&quot;</span>, <span class="hljs-string">&quot;AMF&quot;</span>).get();
+
+        out.println(<span class="hljs-string">&quot;Validates? &quot;</span> + report.conforms());
+        <span class="hljs-keyword">if</span> (!report.conforms()) {
+            out.println(<span class="hljs-string">&quot;Errors:&quot;</span>);
+            <span class="hljs-keyword">for</span> (ValidationResult result : report.results()) {
+                out.println(<span class="hljs-string">&quot; - &quot;</span> + result.message() + <span class="hljs-string">&quot; =&gt; &quot;</span> + result.targetNode());
+            }
         }
     }
-
 }
 
 
@@ -403,25 +405,30 @@
 <span class="hljs-keyword">var</span> AMF = amf.AMF;
 <span class="hljs-keyword">var</span> Aml10Parser = amf.Aml10Parser;
 
-<span class="hljs-comment">//#validation-example</span>
+<span class="hljs-comment">//#custom-validation-example</span>
 AMF.init()
     .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-        <span class="hljs-keyword">return</span> AMF.registerDialect(<span class="hljs-string">&quot;file://aml/music/dialect/playlist.yaml&quot;</span>)
+        <span class="hljs-keyword">return</span> AMF.registerDialect(<span class="hljs-string">&quot;file://aml/music/dialect/playlist.yaml&quot;</span>);
     })
     .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-        <span class="hljs-keyword">new</span> Aml10Parser()
-            .parseFileAsync(<span class="hljs-string">&quot;file://aml/music/playlist1.yaml&quot;</span>)
-            .then(displayEncodedElement);
-    });
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">displayEncodedElement</span>(<span class="hljs-params">model</span>) </span>{
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Encoded element:&quot;</span>);
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;  &quot;</span> + model.encodes.id);
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Class terms for element:&quot;</span>);
-    model.encodes.getTypeUris().forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type</span>) </span>{
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot; - &quot;</span> + type);
-    });
-}</code></pre></div></div></div></p>
+        <span class="hljs-keyword">return</span> AMF.loadValidationProfile(<span class="hljs-string">&quot;file://aml/music/custom_validations/boring.yaml&quot;</span>);
+    })
+    .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Aml10Parser()
+            .parseFileAsync(<span class="hljs-string">&quot;file://aml/music/playlist1.yaml&quot;</span>);
+    })
+    .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">unit</span>) </span>{
+        <span class="hljs-keyword">return</span> AMF.validate(unit, <span class="hljs-string">&quot;Boring Playlists&quot;</span>, <span class="hljs-string">&quot;AMF&quot;</span>);
+    })
+    .then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">report</span>) </span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Validates? &quot;</span> + report.conforms);
+        <span class="hljs-keyword">if</span> (!report.conforms) {
+            out.println(<span class="hljs-string">&quot;Errors:&quot;</span>);
+            report.results.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">result</span>) </span>{
+                <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot; - &quot;</span> + result.message + <span class="hljs-string">&quot; =&gt; &quot;</span> + result.targetNode);
+            });
+        }
+    });</code></pre></div></div></div></p>
 
                                 
                                 </section>
@@ -449,12 +456,12 @@ AMF.init()
 
             
                 
-                <a href="../querying.html" class="navigation navigation-prev " aria-label="Previous page: Using the W3C Stack">
+                <a href="resolution.html" class="navigation navigation-prev " aria-label="Previous page: Resolution">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="generating.html" class="navigation navigation-next " aria-label="Next page: Generating">
+                <a href="../documentation/doc_model.html" class="navigation navigation-next " aria-label="Next page: AML document model">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -465,7 +472,7 @@ AMF.init()
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Parsing","level":"3.1","depth":1,"next":{"title":"Generating","level":"3.2","depth":1,"path":"programming/generating.md","ref":"programming/generating.md","articles":[]},"previous":{"title":"Using the W3C Stack","level":"2.4","depth":1,"path":"querying.md","ref":"querying.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["github-extractor","codetabs","livereload"],"pluginsConfig":{"livereload":{},"search":{},"codetabs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"github-extractor":{"token":""},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"programming/parsing.md","mtime":"2018-06-16T07:21:34.148Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-16T23:16:35.732Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Custom validations","level":"3.5","depth":1,"next":{"title":"AML document model","level":"4.1","depth":1,"path":"documentation/doc_model.md","ref":"documentation/doc_model.md","articles":[]},"previous":{"title":"Resolution","level":"3.4","depth":1,"path":"programming/resolution.md","ref":"programming/resolution.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["github-extractor","codetabs","livereload"],"pluginsConfig":{"livereload":{},"search":{},"codetabs":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"github-extractor":{"token":""},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"programming/custom_validation.md","mtime":"2018-06-17T01:14:03.383Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-06-16T23:16:35.732Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
