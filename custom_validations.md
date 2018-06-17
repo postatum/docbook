@@ -1,6 +1,6 @@
 # Custom validations
 
-This tutorial shows you how to extend the validations capabilities of AML defined metadata writing custom validations that can be enforced by AMF.
+This tutorial shows you how to extend the validations capabilities of AML-defined metadata by writing custom validations that can be enforced by AMF.
 
 ## Before you begin
 
@@ -299,12 +299,12 @@ examples [master] $ java -jar amf.jar validate -ds file://aml/music/dialect/play
 
 Additional validation constraints can be defined over the parsed graph of metadata using a validation profile.
 
-Validation profiles are documents defined after a AML Dialect for describing [validation profiles](https://github.com/aml-org/amf/blob/master/vocabularies/dialects/validation.raml).
+Validation profiles are documents defined after describing an AML Dialect for [validation profiles](https://github.com/aml-org/amf/blob/master/vocabularies/dialects/validation.raml).
 
-Validation profile documents can be used to define declaratively constraints and set the severity level of these validations.
-Additionally, programmatic constraints defined in JavaScript can also be defined.
+Validation profile documents can be used to define constraints declaratively and set the severity level of these validations.
+Additionally, programmatic constraints in JavaScript can also be defined.
 
-An example of a validation profile is located at `aml/music/custom_validations/boring.yaml`. These profile add validation errors for every single song with a duration longer than 180 seconds:
+An example of a validation profile is located at `aml/music/custom_validations/boring.yaml`. This profile adds validation errors for every single song with a duration longer than 180 seconds:
 
 *boring.yaml*
 
@@ -341,8 +341,8 @@ validations:
         }
 ```
 
-As an example, the constraint has been declared in two different ways. `too-long1` defines the constrain declaratively, using the syntax defined in the `Validation Profile` dialect.
-The validation `too-long2` is the equivalent validation but using custom JavaScript code to check the constraint.
+As an example, the constraint has been declared in two different ways. `too-long1` defines the constraint declaratively, using the syntax defined in the `Validation Profile` dialect.
+The validation `too-long2` is the equivalent validation, but using custom JavaScript code to check the constraint.
 Both constraints target nodes in the parsed graph, using the semantics defined in the `Music` AML Vocabulary: the class `music.Track` and the property `music.duration`.
 
 This validation profile can be used in the AMF command line tool using the `--custom-validation-profile` argument:
