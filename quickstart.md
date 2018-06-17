@@ -1,6 +1,6 @@
 # Quickstart
 
-These pages show you how to get up and running as quickly designing metadata documents with AML, including installing all the tools you'll need.
+This tutorial covers installing all the tools you'll need to design metadata documents with AML and shows you how to get up and running quickly.
 
 ## Before you begin
 
@@ -37,9 +37,9 @@ cp ./amf-X.Y.Z-SNAPSHOT.jar ../examples/amf.jar
 
 ## Defining an AML Dialect for a new type of metadata documents
 
-In this example we will define a new type of metadata documents to exchange information about geographical locations.
+In this example we will define a new type of metadata document to exchange information about geographical locations.
 
-In order to do this we will define a new type of AML Dialect describing the structure of the document, located in the examples repository in the file `aml/quickstart/places.yaml`:
+First, we will define a new type of AML Dialect describing the structure of the document, located in the examples repository in the file `aml/quickstart/places.yaml`:
 
 
 *places.yaml*
@@ -70,9 +70,9 @@ documents:
     encodes: LocationNode
 ```
 
-The dialect is very simple. It just defines a document with a couple of nodes one for the place and another one for the geographical location of the place. We are using the [Schema.org](http://schema.org) vocabulary to provide the semantics of the metadata.
+The dialect is very simple. It just defines a document with a couple of nodes: one for the place, and the other for the geographical location of the place. We are using the [Schema.org](http://schema.org) vocabulary to provide the semantics of the metadata.
 
-You can validate the validity of this AML Dialect using AMF. From the top level directory of the examples repository:
+You can check the validity of this AML Dialect using AMF. From the top level directory of the examples repository:
 
 ``` bash
 examples [master] $ java -jar amf.jar validate -in "AML 1.0" -mime-in application/yaml file://aml/quickstart/dialects/places.yaml
@@ -84,7 +84,7 @@ examples [master] $ java -jar amf.jar validate -in "AML 1.0" -mime-in applicatio
 
 ## Parsing metadata documents
 
-Now that we have a valid AML Dialect, we can start using it to parse metadata documents with information about different places.
+Having a valid AML Dialect, we can start using it to parse metadata documents with information about different places.
 
 For example we can try the `golden_gate.yaml` document:
 
@@ -151,7 +151,7 @@ The following JSON-LD document will be returned in the console:
 ]
 ```
 
-[JSON-LD](https://json-ld.org/) is a [W3C standard](https://www.w3.org/TR/json-ld/) to store graphs of information with support for hyperlinks. JSON-LD is the native format for AMF parsed graph models.
+[JSON-LD](https://json-ld.org/) is a [W3C standard](https://www.w3.org/TR/json-ld/) to store graphs of information with support for hyperlinks. JSON-LD is the native format for AMF-parsed graph models.
 
 
 ## Using vocabularies for custom semantics
@@ -192,7 +192,7 @@ propertyTerms:
     description: Geographical longitude
 ```
 
-We could modify our dialect to generate a new version that use the AML Vocabulary for geolocation we have just reviewed:
+We could modify our dialect to generate a new version that uses the AML Vocabulary for geolocation we have just reviewed:
 
 
 *places_2.yaml*
@@ -242,7 +242,7 @@ documents:
     encodes: LocationNode
 ```
 
-Now we can parse documents that include geographical coordinates like:
+Now, we can parse documents that include geographical coordinates like:
 
 *golden_gate_2.yaml*
 ``` yaml
@@ -255,7 +255,7 @@ location:
   long: 122.5
 ```
 
-And the geographical information will appear in the graph using the semantic terms defined in our geolocation vocabulary:
+The geographical information will appear in the graph using the semantic terms defined in our geolocation vocabulary:
 
 ``` bash
 examples [master] $ java -jar amf.jar parse -ds file://aml/quickstart/dialects/places_2.yaml -in "AML 1.0" -mime-in application/yaml -ctx true file://aml/quickstart/golden_gate_2.yaml
@@ -328,8 +328,8 @@ examples [master] $ java -jar amf.jar parse -ds file://aml/quickstart/dialects/p
 
 ## Validating metadata documents
 
-If we try to parse an invalid document the parser will fail and will return an error message and list of errors with syntactic information about the location of the error.
-As an example you can try to parse the `aml/quickstart/piccadilly_circus_error.yaml` document in the examples. In this document geographical coordinates are provided as strings instead of double values:
+If we try to parse an invalid document, the parser will fail and return an error message with a list of errors and syntactic information about the location of the error.
+As an example, you can try to parse the `aml/quickstart/piccadilly_circus_error.yaml` document in the examples. In this document, geographical coordinates are provided as strings instead of double values:
 
 *piccadilly_circus_error.yaml*
 ``` yaml
@@ -368,4 +368,4 @@ Level: Violation
   Position: Some(LexicalInformation([(7,8)-(7,15)]))
 ```
 
-In order to get the error report as a machine-friendly graph encoded using JSON-LD, the `validate` AMF command must be used instead.
+To get the error report as a machine-friendly graph encoded using JSON-LD, the `validate` AMF command must be used.
