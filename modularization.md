@@ -1,6 +1,6 @@
 # Modularization
 
-This tutorial shows you how to define and edit reusable modular metadata documents that can be linked together as a linked graph of metadata using AML.
+This tutorial shows you how to define and edit reusable, modular metadata documents that can be linked together as a graph of metadata using AML.
 
 ## Before you begin
 
@@ -26,7 +26,7 @@ This tutorial assumes you have a working version of the AMF comand-line as descr
 
 ## Initial stand-alone AML dialect
 
-In this tutorial will break a stand-alone monolithic metadata document defined using AML into a set of modular documents that can be edited, published and linked independently.
+In this tutorial, you will split a stand-alone, monolithic AML metadata document into a set of modular documents that can be edited, published and linked independently.
 
 We will start with the initial version of the dialect, found in `aml/modular/dialect/database_configuration.yaml`, a very simple AML Dialect describing configuration metadata file with information to connect to different databases.
 
@@ -99,11 +99,11 @@ documents:
     encodes: DatabaseConfigNode
 ```
 
-This AML dialect uses two vocabularies, one to describe infrastructure and another one to describe configurations, located in `aml/modular/vocabulary/config.yaml` and `aml/modular/vocabulary/infra.yaml`.
+This AML dialect uses two vocabularies, one to describe infrastructure and the other to describe configurations, located in `aml/modular/vocabulary/config.yaml` and `aml/modular/vocabulary/infra.yaml`.
 
-Since this AML dialect defines a single monolithic type of document, the `documents` section of the dialect only includes a `root` entry encoding the root node of the document.
+Since this AML dialect defines a single, monolithic type of document, the `documents` section of the dialect includes only a `root` entry encoding the root node of the document.
 
-Using this dialect definition, we can edit stand-alone configuration documents, like the configuration document located at `aml/modular/db1.yaml`:
+Using this dialect definition, we can edit standalone configuration documents, like the configuration document located at `aml/modular/db1.yaml`:
 
 *db1.yaml*
 ``` yaml
@@ -126,9 +126,9 @@ dbs:
 
 ## Defining reusable fragments
 
-In many situations entities defined in a document can be reused in multiple documents. AML allows to define this reusable entities in their own independent metadata documents known as fragments that can be linked from all these documents. The graph of information parsed from all these documents will point to the same node URI in the generated metadata graph.
+In many situations, entities defined in a document can be reused in multiple documents. AML allows you to define reusable entities in their own independent metadata documents, known as fragments, that can be linked from all these documents. The graph of information parsed from all these documents will point to the same node URI in the generated metadata graph.
 
-To declare a fragment the `documents` section of the AML dialect must include a `fragments` entry with a mapping from name of fragments to the node encoded in the fragment.
+To declare a fragment, the `documents` section of the AML dialect must include a `fragments` entry with a mapping from the name of the fragment to the node encoded in the fragment.
 
 Version 1.1 of the DB Config dialect introduces a fragment to declare databases servers. It can be found in the `aml/modular/dialect/database_configuration_2.yaml`.
 
@@ -150,7 +150,7 @@ documents:
       DatabaseServer: DatabaseServerNode
 ```
 
-In this case we define a fragment named `DatabaseServer` encoding a `DatabaseServerNode`.
+In this case, we define a fragment named `DatabaseServer` encoding a `DatabaseServerNode`.
 
 With this dialect definition, we can create fragments declaring metadata about database servers with the semantics of the `Infrastructure` vocabulary, for example in the `aml/modular/server.yaml`:
 
@@ -164,7 +164,7 @@ port: 5001
 driver: mysql
 ```
 
-An these fragments can be linked from the configuration document, using the `!include` linking directive:
+These fragments can be linked from the configuration document, using the `!include` linking directive:
 
 *db2.yaml*
 ``` yaml
@@ -186,7 +186,7 @@ dbs:
 Another common use case is to define related collections of metadata entities that can be reused across different documents.
 
 AML supports these modular collections through the definition of metadata libraries.
-Libraries are defined in the `documents` section using the `libraries` property. This node keeps a map of declarations for the library, including name of the declaration and typed of declared nodes.
+Libraries are defined in the `documents` section using the `libraries` property. This node keeps a map of declarations for the library, including name of the declaration and type of declared nodes.
 
 The version 1.2 of the `DB Config` dialect, located at `aml/modular/dialect/database_configuration_3.yaml` includes the declaration of libraries of servers:
 
@@ -209,7 +209,7 @@ documents:
     declares:
       servers: DatabaseServerNode
 ```
-After this dialect definitions, metadata documents containing libraries of servers can be defined, like the one located at `aml/modular/servers_library.yaml`:
+After these dialect definitions, metadata documents containing libraries of servers can be defined, like the one located at `aml/modular/servers_library.yaml`:
 
 *servers_library.yaml*
 
@@ -234,7 +234,7 @@ servers:
     driver: mysql
 ```
 
-And these libraries can be referenced from configuration document using library reference aliases, as in `aml/modular/db3.yaml`:
+These libraries can be referenced from configuration document using library reference aliases, as in `aml/modular/db3.yaml`:
 
 *db3.yaml*
 
@@ -255,7 +255,7 @@ dbs:
     username: jsmith
 ```
 
-Instead of library reference aliases, `$ref` linking directives can also be used, for example in this JSON representation of the same metadata:
+Instead of library reference aliases, `$ref` linking directives can also be used, as shown in this example JSON representation of the same metadata:
 
 *db3.json*
 
@@ -279,14 +279,14 @@ Instead of library reference aliases, `$ref` linking directives can also be used
 ## Parsing and resolving with AMF
 
 AMF can be used to parse modular metadata documents containing links.
-By default, AMF will produce a JSON-LD document encoding a graph where links among documents will remain explicit using the `doc:link-target` property where all the linked documents will be eagerly followed and added to the `doc:references` list.
+By default, AMF will produce a JSON-LD document encoding a graph that explicitly links documents using the `doc:link-target` property. Linked documents will be eagerly followed and added to the `doc:references` list.
 
 Different types of documents in the graph will be marked with different semantics.
 
-- Fragments will be marked with the `doc:Fragment` class
-- Libraries will be marked with the `doc:Module` class
+- Fragments will be marked with the `doc:Fragment` class.
+- Libraries will be marked with the `doc:Module` class.
 
-For example, to parse the version 1.1 of the database document, using a fragment, AMF can be used:
+For example, to parse version 1.1 of the database document using a fragment, AMF can be used:
 
 ``` bash
 examples [master] $ java -jar amf.jar parse -ds file://aml/modular/dialect/database_configuration_2.yaml -in "AML 1.0" -mime-in application/yaml -ctx true file://aml/modular/db2.yaml
@@ -390,9 +390,9 @@ examples [master] $ java -jar amf.jar parse -ds file://aml/modular/dialect/datab
   }
 ]
 ```
-Sometimes, we want to work with the final graph of metadata, where all the explicit links have been replaced by standard JSON-LD links. In the process all the `doc:references` relationships disappear and a single unit is generated. This process is known as `resolution` in AMF.
+Sometimes, we want to work with the final graph of metadata in which all explicit links have been replaced by standard JSON-LD links. In the process, all the `doc:references` relationships disappear and a single unit is generated. This process is known as `resolution` in AMF.
 
-You can trigger the resolution process in AMF programmatically or passing the `--resolve true` argument to the command line tool:
+You can trigger the resolution process in AMF programmatically or by passing the `--resolve true` argument to the command line tool:
 
 ``` bash
 examples [master] $ java -jar amf.jar parse -ds file://aml/modular/dialect/database_configuration_2.yaml -in "AML 1.0" -mime-in application/yaml -ctx true --resolve true file://aml/modular/db2.yaml
